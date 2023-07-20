@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://player-assets/butterboi/butter-boy-resized.png" type="Texture" id=1]
+[ext_resource path="res://player-assets/butterboi/butter-boy.gd" type="Script" id=2]
+[ext_resource path="res://player-assets/butterboi/pixil-frame-0_15.png" type="Texture" id=3]
+[ext_resource path="res://player-assets/butterboi/pixil-frame-0_14.png" type="Texture" id=4]
+[ext_resource path="res://player-assets/butterboi/pixil-frame-0_19.png" type="Texture" id=5]
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "Jumping",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "Running",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 15.0
+height = 18.0
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 2 )
+
+[node name="PlayerSkin" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+frames = SubResource( 4 )
+animation = "Idle"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 5 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.75, 0.75 )
+limit_smoothed = true
+drag_margin_h_enabled = true
+smoothing_enabled = true
+smoothing_speed = 7.0
+drag_margin_left = 0.4
+drag_margin_bottom = 0.4
+
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="DashTimer" to="." method="_on_DashTimer_timeout"]
